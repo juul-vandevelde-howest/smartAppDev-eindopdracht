@@ -1,3 +1,4 @@
+import 'package:flip/routes/auth/login.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
@@ -5,14 +6,26 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void logout() {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Login(),
+        ),
+      );
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Settings'),
         ),
-        body: const Center(
-          child: Text("Settings"),
+        body: Center(
+          child: TextButton(
+            onPressed: logout,
+            child: const Text("Logout"),
+          ),
         ),
       ),
     );
