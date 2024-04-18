@@ -15,17 +15,14 @@ class Settings extends StatelessWidget {
       );
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Settings'),
-        ),
-        body: Center(
-          child: TextButton(
-            onPressed: logout,
-            child: const Text("Logout"),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: Center(
+        child: TextButton(
+          onPressed: logout,
+          child: const Text("Logout"),
         ),
       ),
     );

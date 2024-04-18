@@ -5,15 +5,12 @@ class Add extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Add'),
-        ),
-        body: const Center(
-          child: Text("add"),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add'),
+      ),
+      body: const Center(
+        child: Text("add"),
       ),
     );
   }

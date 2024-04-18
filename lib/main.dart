@@ -23,10 +23,18 @@ class MainApp extends StatefulWidget {
 class MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flip',
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: const Login(),
+      theme: ThemeData(
+        fontFamily: 'Poppins',
+        textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: 'Poppins',
+              bodyColor: const Color(0xFF133266),
+              displayColor: const Color(0xFF133266),
+            ),
+      ),
     );
   }
 }

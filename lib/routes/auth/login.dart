@@ -45,52 +45,178 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
-          child: Form(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              children: [
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.email),
-                    hintText: 'Enter your email',
-                    labelText: 'Email',
-                  ),
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an email address';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+        child: Form(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Welcome back!',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
                 ),
-                TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.password),
-                    hintText: 'Enter your password',
-                    labelText: 'Password',
+              ),
+              Row(
+                children: [
+                  const Text(
+                    'Login below or ',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
-                  onChanged: (value) {
-                    password = value;
-                  },
+                  TextButton(
+                    onPressed: () {
+                      // Add code to navigate to the create account screen
+                    },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.zero,
+                      ),
+                    ),
+                    child: const Text(
+                      'create an account',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF133266),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Text(
+                "Email",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  border: const Border(
+                    top: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 4.0,
+                    ),
+                    bottom: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 8.0,
+                    ),
+                    left: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 4.0,
+                    ),
+                    right: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 4.0,
+                    ),
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                ElevatedButton(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your email',
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      email = value;
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "Password",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  border: const Border(
+                    top: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 4.0,
+                    ),
+                    bottom: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 8.0,
+                    ),
+                    left: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 4.0,
+                    ),
+                    right: BorderSide(
+                      color: Color(0xFF133266),
+                      width: 4.0,
+                    ),
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your password',
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      password = value;
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF133266),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextButton(
                   onPressed: login,
-                  child: const Text('Login'),
+                  child: const Text(
+                    'Sign In',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ],
-            ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      // Add code to navigate to the forgot password screen
+                    },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.zero,
+                      ),
+                    ),
+                    child: const Text(
+                      'Forgot password?',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF133266),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
