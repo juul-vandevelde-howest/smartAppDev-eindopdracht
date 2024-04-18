@@ -1,6 +1,6 @@
 import 'package:flip/routes/auth/login.dart';
+import 'package:flip/routes/flip/decks.dart';
 import 'package:flutter/material.dart';
-import 'package:flip/routes/flip/flip_navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Signup extends StatefulWidget {
@@ -31,7 +31,7 @@ class _SignupState extends State<Signup> {
                 pageBuilder: (BuildContext context,
                     Animation<double> animation1,
                     Animation<double> animation2) {
-                  return const FlipNavigation();
+                  return const Decks();
                 },
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
