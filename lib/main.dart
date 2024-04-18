@@ -34,6 +34,11 @@ class MainAppState extends State<MainApp> {
               bodyColor: const Color(0xFF133266),
               displayColor: const Color(0xFF133266),
             ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color(0xFF133266),
+          selectionColor: Color(0xFFA5DAE3),
+          selectionHandleColor: Color(0xFFA5DAE3),
+        ),
       ),
     );
   }
