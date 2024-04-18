@@ -1,25 +1,28 @@
-import 'package:flip/routes/auth/signup.dart';
+import 'package:flip/routes/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/routes/flip/flip_navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> {
+class _SignupState extends State<Signup> {
   String email = '';
   String password = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void login() async {
+  void signup() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
         if (credential.user != null) {
           if (mounted) {
             Navigator.pushReplacement(
@@ -32,8 +35,10 @@ class _LoginState extends State<Login> {
         }
       } on FirebaseAuthException catch (e) {
         String message = 'An error occurred. Please try again later.';
-        if (e.code == 'invalid-credential') {
-          message = 'Invalid credentials. Please try again.';
+        if (e.code == 'weak-password') {
+          message = 'The password provided is too weak.';
+        } else if (e.code == 'email-already-in-use') {
+          message = 'There is already an account with that email.';
         }
 
         if (mounted) {
@@ -67,7 +72,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Welcome back!',
+                      'Create an account',
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
@@ -76,7 +81,7 @@ class _LoginState extends State<Login> {
                     Row(
                       children: [
                         const Text(
-                          'Login below or ',
+                          'Already have an account?',
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -89,7 +94,7 @@ class _LoginState extends State<Login> {
                                 pageBuilder: (BuildContext context,
                                     Animation<double> animation1,
                                     Animation<double> animation2) {
-                                  return const Signup();
+                                  return const Login();
                                 },
                                 transitionDuration: Duration.zero,
                                 reverseTransitionDuration: Duration.zero,
@@ -103,7 +108,7 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           child: const Text(
-                            'create an account',
+                            'log in',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -219,6 +224,8 @@ class _LoginState extends State<Login> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your password';
+                            } else if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
                             }
                             return null;
                           },
@@ -239,9 +246,9 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: TextButton(
-                    onPressed: login,
+                    onPressed: signup,
                     child: const Text(
-                      'Sign In',
+                      'Create Account',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -249,33 +256,9 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        // Add code to navigate to the forgot password screen
-                      },
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          EdgeInsets.zero,
-                        ),
-                      ),
-                      child: const Text(
-                        'Forgot password?',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF133266),
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
-            const SizedBox(height: 80),
+            const SizedBox(height: 128),
           ],
         ),
       ),
