@@ -10,6 +10,7 @@ dependencies:
   cloud_firestore: ^4.15.9
   firebase_auth: ^4.17.9
   firebase_core: ^2.27.1
+  phosphor_flutter: ^2.0.0
   flutter:
     sdk: flutter
 
