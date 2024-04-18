@@ -27,8 +27,14 @@ class _SignupState extends State<Signup> {
           if (mounted) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => const FlipNavigation(),
+              PageRouteBuilder(
+                pageBuilder: (BuildContext context,
+                    Animation<double> animation1,
+                    Animation<double> animation2) {
+                  return const FlipNavigation();
+                },
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
               ),
             );
           }

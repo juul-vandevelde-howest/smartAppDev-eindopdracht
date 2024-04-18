@@ -1,3 +1,4 @@
+import 'package:flip/routes/auth/forgot_password.dart';
 import 'package:flip/routes/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flip/routes/flip/flip_navigation.dart';
@@ -24,8 +25,14 @@ class _LoginState extends State<Login> {
           if (mounted) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => const FlipNavigation(),
+              PageRouteBuilder(
+                pageBuilder: (BuildContext context,
+                    Animation<double> animation1,
+                    Animation<double> animation2) {
+                  return const FlipNavigation();
+                },
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
               ),
             );
           }
@@ -254,7 +261,18 @@ class _LoginState extends State<Login> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        // Add code to navigate to the forgot password screen
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (BuildContext context,
+                                Animation<double> animation1,
+                                Animation<double> animation2) {
+                              return const ForgotPassword();
+                            },
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero,
+                          ),
+                        );
                       },
                       style: ButtonStyle(
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
