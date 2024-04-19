@@ -124,7 +124,8 @@ class Add extends StatelessWidget {
           Container(
             color: const Color(0xFF133266),
             child: Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.only(
+                  top: 20, left: 40, right: 40, bottom: 40),
               child: Column(
                 children: [
                   const Row(
@@ -138,6 +139,8 @@ class Add extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,
+                            decorationColor: Colors.white,
+                            decorationThickness: 2,
                           ),
                         ),
                       ),
@@ -150,12 +153,14 @@ class Add extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,
+                            decorationColor: Colors.white,
+                            decorationThickness: 2,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   Container(
                     width: double.infinity,
                     height: 60,
