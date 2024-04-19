@@ -1,11 +1,49 @@
+import 'dart:convert';
+
 import 'package:flip/routes/flip/add.dart';
 import 'package:flip/routes/flip/settings.dart';
 import 'package:flip/widgets/deck_card.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:http/http.dart' as http;
 
-class Decks extends StatelessWidget {
+class Decks extends StatefulWidget {
   const Decks({super.key});
+
+  @override
+  State<Decks> createState() => _DecksState();
+}
+
+class _DecksState extends State<Decks> {
+  Map<String, List<int>> deckData = {
+    'loading': [0, 0]
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:3000/decks'));
+    if (response.statusCode == 200) {
+      final List<dynamic> decks = jsonDecode(response.body);
+      Map<String, List<int>> updatedDeckData = {};
+      for (var deck in decks) {
+        String deckName = deck['name'];
+        int cardCount = deck['cards'].length;
+        int learnedCount =
+            deck['cards'].where((card) => card['studied'] == true).length;
+        updatedDeckData[deckName] = [cardCount, learnedCount];
+      }
+      setState(() {
+        deckData = updatedDeckData;
+      });
+    } else {
+      // show the user an error message
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,16 +111,37 @@ class Decks extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: const [
-                  DeckCard(),
-                  DeckCard(),
-                  DeckCard(),
-                  DeckCard(),
-                  DeckCard(),
-                ],
-              ),
+              child: deckData.isNotEmpty && deckData.keys.first == "loading"
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF133266),
+                      ),
+                    )
+                  : deckData.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'No decks found.\nAdd a deck to get started.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      : ListView(
+                          padding: EdgeInsets.zero,
+                          children: deckData.keys
+                              .map(
+                                (deckName) => DeckCard(
+                                  name: deckName,
+                                  cardCount:
+                                      deckData[deckName]?.elementAt(0) ?? 0,
+                                  learnedCount:
+                                      deckData[deckName]?.elementAt(1) ?? 0,
+                                ),
+                              )
+                              .toList(),
+                        ),
             ),
           ),
           Container(

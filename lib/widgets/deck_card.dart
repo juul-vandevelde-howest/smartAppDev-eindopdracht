@@ -5,8 +5,15 @@ import 'package:flip/routes/flip/study.dart';
 import 'package:flip/widgets/progressbar.dart';
 
 class DeckCard extends StatelessWidget {
+  final String name;
+  final int cardCount;
+  final int learnedCount;
+
   const DeckCard({
     super.key,
+    required this.name,
+    required this.cardCount,
+    required this.learnedCount,
   });
 
   @override
@@ -56,19 +63,19 @@ class DeckCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Deck Name',
-                        style: TextStyle(
+                        name,
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '10 cards',
-                        style: TextStyle(
+                        "$cardCount cards",
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                       ),
@@ -99,12 +106,12 @@ class DeckCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Progressbar(value: 0.9),
-                  SizedBox(height: 8),
-                  Text("9/10 cards learned"),
+                  const Progressbar(value: 0.9),
+                  const SizedBox(height: 8),
+                  Text("$learnedCount/$cardCount cards learned"),
                 ],
               ),
             ],
