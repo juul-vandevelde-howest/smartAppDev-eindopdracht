@@ -31,6 +31,11 @@ class Add extends StatelessWidget {
               ),
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 20, left: 40, right: 40),
+            // TODO: Add a way to change the number of cards
+            child: Text('1 card', style: TextStyle(fontSize: 20)),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -61,48 +66,51 @@ class Add extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextFormField(
-                                  cursorColor: const Color(0xFF133266),
-                                  cursorWidth: 3,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.zero,
-                                    border: InputBorder.none,
-                                    hintText: "Type term here",
-                                    hintStyle: TextStyle(
+                            child: Form(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextFormField(
+                                    cursorColor: const Color(0xFF133266),
+                                    cursorWidth: 3,
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                     ),
-                                  ),
-                                ),
-                                TextFormField(
-                                  cursorColor: const Color(0xFF133266),
-                                  cursorWidth: 3,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.zero,
-                                    border: InputBorder.none,
-                                    hintText: "Type definition here",
-                                    hintStyle: TextStyle(
-                                      fontSize: 16,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.zero,
+                                      border: InputBorder.none,
+                                      hintText: "Type term here",
+                                      hintStyle: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  TextFormField(
+                                    cursorColor: const Color(0xFF133266),
+                                    cursorWidth: 3,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.zero,
+                                      border: InputBorder.none,
+                                      hintText: "Type definition here",
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
