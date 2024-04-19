@@ -1,5 +1,6 @@
 import 'package:flip/routes/flip/decks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Add extends StatelessWidget {
   const Add({super.key});
@@ -11,13 +12,22 @@ class Add extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 100, left: 40, right: 40),
-            child: Text(
-              "Type deck name here",
-              style: TextStyle(
+          Padding(
+            padding: const EdgeInsets.only(top: 100, left: 40, right: 40),
+            child: TextFormField(
+              cursorColor: const Color(0xFF133266),
+              cursorWidth: 3,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 26,
+              ),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: "Type deck name here",
+                hintStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26,
+                ),
               ),
             ),
           ),
@@ -25,6 +35,7 @@ class Add extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ListView(
+                padding: EdgeInsets.zero,
                 children: [
                   Container(
                     margin: const EdgeInsets.only(bottom: 20),
@@ -49,29 +60,50 @@ class Add extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(20.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Type term here',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextFormField(
+                                  cursorColor: const Color(0xFF133266),
+                                  cursorWidth: 3,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.zero,
+                                    border: InputBorder.none,
+                                    hintText: "Type term here",
+                                    hintStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Type definition here',
-                                style: TextStyle(
-                                  fontSize: 16,
+                                TextFormField(
+                                  cursorColor: const Color(0xFF133266),
+                                  cursorWidth: 3,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.zero,
+                                    border: InputBorder.none,
+                                    hintText: "Type definition here",
+                                    hintStyle: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
