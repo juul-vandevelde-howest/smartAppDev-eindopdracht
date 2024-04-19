@@ -52,7 +52,7 @@ class Decks extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10, left: 40, right: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
             child: SearchBar(
               textStyle: MaterialStateProperty.resolveWith(
                   (states) => const TextStyle(color: Color(0xFF133266))),
@@ -74,6 +74,7 @@ class Decks extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ListView(
+                padding: EdgeInsets.zero,
                 children: const [
                   DeckCard(),
                   DeckCard(),
