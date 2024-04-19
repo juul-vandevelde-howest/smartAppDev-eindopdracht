@@ -1,4 +1,6 @@
 import 'package:flip/routes/flip/decks.dart';
+import 'package:flip/widgets/progressbar.dart';
+import 'package:flip/widgets/study_card.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -50,28 +52,9 @@ class Study extends StatelessWidget {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF133266),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: const Color(0xFF133266),
-                          width: 5,
-                        ),
-                      ),
-                      child: LinearProgressIndicator(
-                        value: 0.08,
-                        minHeight: 4,
-                        color: Colors.white,
-                        backgroundColor: const Color(0xFF133266),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Progressbar(value: 0.08),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,41 +107,7 @@ class Study extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.65,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: const Border(
-                        top: BorderSide(
-                          color: Color(0xFF133266),
-                          width: 4.0,
-                        ),
-                        bottom: BorderSide(
-                          color: Color(0xFF133266),
-                          width: 8.0,
-                        ),
-                        left: BorderSide(
-                          color: Color(0xFF133266),
-                          width: 4.0,
-                        ),
-                        right: BorderSide(
-                          color: Color(0xFF133266),
-                          width: 4.0,
-                        ),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "Bonjour",
-                        style: TextStyle(
-                          color: Color(0xFF133266),
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: studyCard(context),
                 ),
                 const Center(
                   child: Text(

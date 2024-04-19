@@ -1,4 +1,5 @@
 import 'package:flip/routes/auth/login.dart';
+import 'package:flip/routes/flip/decks.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
@@ -7,6 +8,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void logout() {
+      // also logout of firebase
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -16,13 +18,27 @@ class Settings extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
       body: Center(
-        child: TextButton(
-          onPressed: logout,
-          child: const Text("Logout"),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Decks(),
+                  ),
+                );
+              },
+              child: const Text("Return to Decks"),
+            ),
+            TextButton(
+              onPressed: logout,
+              child: const Text("Logout"),
+            ),
+          ],
         ),
       ),
     );
