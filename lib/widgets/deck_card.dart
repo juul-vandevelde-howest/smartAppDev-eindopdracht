@@ -8,12 +8,14 @@ class DeckCard extends StatelessWidget {
   final String name;
   final int cardCount;
   final int learnedCount;
+  final dynamic cards;
 
   const DeckCard({
     super.key,
     required this.name,
     required this.cardCount,
     required this.learnedCount,
+    required this.cards,
   });
 
   @override
@@ -94,7 +96,7 @@ class DeckCard extends StatelessWidget {
                           pageBuilder: (BuildContext context,
                               Animation<double> animation1,
                               Animation<double> animation2) {
-                            return const Add();
+                            return Add(deckName: name, editCards: cards);
                           },
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,

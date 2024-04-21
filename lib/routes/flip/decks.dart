@@ -15,10 +15,10 @@ class Decks extends StatefulWidget {
 }
 
 class _DecksState extends State<Decks> {
-  Map<String, List<int>> deckData = {
+  Map<String, List<dynamic>> deckData = {
     'loading': [0, 0]
   };
-  Map<String, List<int>> filteredDeckData = {};
+  Map<String, List<dynamic>> filteredDeckData = {};
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _DecksState extends State<Decks> {
       final response = await http.get(Uri.parse('http://10.0.2.2:3000/decks'));
       if (response.statusCode == 200) {
         final List<dynamic> decks = jsonDecode(response.body);
-        Map<String, List<int>> updatedDeckData = {};
+        Map<String, List<dynamic>> updatedDeckData = {};
         for (var deck in decks) {
           String deckName = deck['name'];
           if (deckName.isEmpty) {
@@ -45,13 +45,18 @@ class _DecksState extends State<Decks> {
               counter++;
             }
           }
+          String deckId = deck['id'];
           int cardCount = deck['cards'].length;
           int learnedCount =
               deck['cards'].where((card) => card['studied'] == true).length;
-          updatedDeckData[deckName] = [cardCount, learnedCount];
+          updatedDeckData[deckName] = [
+            deckId,
+            cardCount,
+            learnedCount,
+            deck['cards']
+          ];
         }
         setState(() {
-          print(updatedDeckData);
           deckData = updatedDeckData;
           filteredDeckData = updatedDeckData;
         });
@@ -117,10 +122,8 @@ class _DecksState extends State<Decks> {
               onChanged: (value) {
                 setState(() {
                   if (value.isEmpty) {
-                    // if the search query is empty, display all decks
                     filteredDeckData = Map.from(deckData);
                   } else {
-                    // filter the decks based on search input
                     filteredDeckData = {};
                     deckData.forEach((key, list) {
                       if (key.toLowerCase().contains(value.toLowerCase())) {
@@ -175,11 +178,14 @@ class _DecksState extends State<Decks> {
                                 (deckName) => DeckCard(
                                   name: deckName,
                                   cardCount: filteredDeckData[deckName]
-                                          ?.elementAt(0) ??
-                                      0,
-                                  learnedCount: filteredDeckData[deckName]
                                           ?.elementAt(1) ??
                                       0,
+                                  learnedCount: filteredDeckData[deckName]
+                                          ?.elementAt(2) ??
+                                      0,
+                                  cards: filteredDeckData[deckName]
+                                          ?.elementAt(3) ??
+                                      [],
                                 ),
                               )
                               .toList(),

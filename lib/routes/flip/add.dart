@@ -6,15 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Add extends StatefulWidget {
-  const Add({super.key});
+  final dynamic deckName;
+  final dynamic editCards;
+  const Add({super.key, this.deckName, this.editCards});
 
   @override
   State<Add> createState() => _AddState();
 }
 
 class _AddState extends State<Add> {
-  final List<Map<String, String>> _cards = [];
+  List<Map<String, String>> _cards = [];
   String _deckName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.editCards != null) {
+      for (final card in widget.editCards) {
+        _cards.add({'term': card['term'], 'definition': card['definition']});
+      }
+    }
+    if (widget.deckName != null) {
+      _deckName = widget.deckName;
+    }
+  }
 
   void _updateCardsList(String term, String definition, int index) {
     setState(() {
@@ -93,8 +108,7 @@ class _AddState extends State<Add> {
                             _deckName = value;
                           });
                         },
-                        validator: (value) =>
-                            value!.isEmpty ? 'Enter a deck name' : null,
+                        initialValue: widget.deckName,
                         cursorColor: const Color(0xFF133266),
                         cursorWidth: 3,
                         style: const TextStyle(
