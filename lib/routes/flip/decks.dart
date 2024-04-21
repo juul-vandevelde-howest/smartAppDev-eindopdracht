@@ -18,6 +18,7 @@ class _DecksState extends State<Decks> {
   Map<String, List<int>> deckData = {
     'loading': [0, 0]
   };
+  Map<String, List<int>> filteredDeckData = {};
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _DecksState extends State<Decks> {
         setState(() {
           print(updatedDeckData);
           deckData = updatedDeckData;
+          filteredDeckData = updatedDeckData;
         });
       } else {
         // TODO: show the user an error message
@@ -112,8 +114,22 @@ class _DecksState extends State<Decks> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
             child: SearchBar(
-              onChanged: // TODO: Implement search functionality on deck name & word
-                  (value) {},
+              onChanged: (value) {
+                setState(() {
+                  if (value.isEmpty) {
+                    // if the search query is empty, display all decks
+                    filteredDeckData = Map.from(deckData);
+                  } else {
+                    // filter the decks based on search input
+                    filteredDeckData = {};
+                    deckData.forEach((key, list) {
+                      if (key.toLowerCase().contains(value.toLowerCase())) {
+                        filteredDeckData[key] = list;
+                      }
+                    });
+                  }
+                });
+              },
               textStyle: MaterialStateProperty.resolveWith(
                   (states) => const TextStyle(color: Color(0xFF133266))),
               surfaceTintColor:
@@ -125,7 +141,7 @@ class _DecksState extends State<Decks> {
                 child: PhosphorIcon(PhosphorIconsBold.magnifyingGlass,
                     size: 24.0, color: Color(0xFF133266)),
               ),
-              hintText: 'Search for a deck or word',
+              hintText: 'Search for a deck',
               side: MaterialStateProperty.all(
                   const BorderSide(color: Color(0xFF133266), width: 3)),
             ),
@@ -151,15 +167,19 @@ class _DecksState extends State<Decks> {
                           ),
                         )
                       : ListView(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
                           padding: EdgeInsets.zero,
-                          children: deckData.keys
+                          children: filteredDeckData.keys
                               .map(
                                 (deckName) => DeckCard(
                                   name: deckName,
-                                  cardCount:
-                                      deckData[deckName]?.elementAt(0) ?? 0,
-                                  learnedCount:
-                                      deckData[deckName]?.elementAt(1) ?? 0,
+                                  cardCount: filteredDeckData[deckName]
+                                          ?.elementAt(0) ??
+                                      0,
+                                  learnedCount: filteredDeckData[deckName]
+                                          ?.elementAt(1) ??
+                                      0,
                                 ),
                               )
                               .toList(),
