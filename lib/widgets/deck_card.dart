@@ -74,7 +74,11 @@ class DeckCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        cardCount == 1 ? "$cardCount card" : "$cardCount cards",
+                        cardCount == 0
+                            ? "Edit to add cards"
+                            : cardCount == 1
+                                ? "$cardCount card"
+                                : "$cardCount cards",
                         style: const TextStyle(
                           fontSize: 16,
                         ),

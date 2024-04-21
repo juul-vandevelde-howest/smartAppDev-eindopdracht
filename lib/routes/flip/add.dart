@@ -31,7 +31,7 @@ class _AddState extends State<Add> {
   }
 
   void saveDeck() async {
-    if (_deckName.isNotEmpty && _cards.isNotEmpty) {
+    if (_deckName.isEmpty && _cards.isEmpty) {
       if (mounted) {
         Navigator.pushReplacement(
           context,
