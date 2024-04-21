@@ -109,10 +109,12 @@ class DeckCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Progressbar(value: learnedCount / cardCount),
-                  const SizedBox(height: 8),
-                  if (learnedCount == cardCount)
-                    const Text("All cards learned"),
+                  if (cardCount != 0)
+                    Progressbar(value: learnedCount / cardCount),
+                  if (cardCount != 0) const SizedBox(height: 8),
+                  if (cardCount != 0)
+                    if (learnedCount == cardCount)
+                      const Text("All cards learned"),
                   if (learnedCount != cardCount)
                     Text("$learnedCount/$cardCount cards learned"),
                 ],

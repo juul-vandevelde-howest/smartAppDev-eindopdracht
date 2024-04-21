@@ -13,7 +13,6 @@ class Add extends StatefulWidget {
 }
 
 class _AddState extends State<Add> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<Map<String, String>> _cards = [];
   String _deckName = '';
 
@@ -32,7 +31,7 @@ class _AddState extends State<Add> {
   }
 
   void saveDeck() async {
-    if (_deckName.isEmpty && _cards.isEmpty) {
+    if (_deckName.isNotEmpty && _cards.isNotEmpty) {
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -46,9 +45,6 @@ class _AddState extends State<Add> {
           ),
         );
       }
-    }
-
-    if (!_formKey.currentState!.validate()) {
       return;
     }
 
@@ -91,34 +87,31 @@ class _AddState extends State<Add> {
                     padding: EdgeInsets.zero,
                     children: [
                       const SizedBox(height: 55),
-                      Form(
-                        key: _formKey,
-                        child: TextFormField(
-                          onChanged: (value) {
-                            setState(() {
-                              _deckName = value;
-                            });
-                          },
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter a deck name' : null,
-                          cursorColor: const Color(0xFF133266),
-                          cursorWidth: 3,
-                          style: const TextStyle(
+                      TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _deckName = value;
+                          });
+                        },
+                        validator: (value) =>
+                            value!.isEmpty ? 'Enter a deck name' : null,
+                        cursorColor: const Color(0xFF133266),
+                        cursorWidth: 3,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                        ),
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF133266),
+                              width: 3,
+                            ),
+                          ),
+                          hintText: "Type deck name here",
+                          hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 26,
-                          ),
-                          decoration: const InputDecoration(
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xFF133266),
-                                width: 3,
-                              ),
-                            ),
-                            hintText: "Type deck name here",
-                            hintStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 26,
-                            ),
                           ),
                         ),
                       ),

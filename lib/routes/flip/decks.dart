@@ -33,12 +33,24 @@ class _DecksState extends State<Decks> {
         Map<String, List<int>> updatedDeckData = {};
         for (var deck in decks) {
           String deckName = deck['name'];
+          if (deckName.isEmpty) {
+            deckName = '(Draft) Untitled deck';
+          }
+          if (updatedDeckData.containsKey(deckName)) {
+            int counter = 1;
+            String originalDeckName = deckName;
+            while (updatedDeckData.containsKey(deckName)) {
+              deckName = '$originalDeckName $counter';
+              counter++;
+            }
+          }
           int cardCount = deck['cards'].length;
           int learnedCount =
               deck['cards'].where((card) => card['studied'] == true).length;
           updatedDeckData[deckName] = [cardCount, learnedCount];
         }
         setState(() {
+          print(updatedDeckData);
           deckData = updatedDeckData;
         });
       } else {
