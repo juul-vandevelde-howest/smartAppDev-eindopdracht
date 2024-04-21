@@ -26,22 +26,26 @@ class _DecksState extends State<Decks> {
   }
 
   Future<void> fetchData() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:3000/decks'));
-    if (response.statusCode == 200) {
-      final List<dynamic> decks = jsonDecode(response.body);
-      Map<String, List<int>> updatedDeckData = {};
-      for (var deck in decks) {
-        String deckName = deck['name'];
-        int cardCount = deck['cards'].length;
-        int learnedCount =
-            deck['cards'].where((card) => card['studied'] == true).length;
-        updatedDeckData[deckName] = [cardCount, learnedCount];
+    try {
+      final response = await http.get(Uri.parse('http://10.0.2.2:3000/decks'));
+      if (response.statusCode == 200) {
+        final List<dynamic> decks = jsonDecode(response.body);
+        Map<String, List<int>> updatedDeckData = {};
+        for (var deck in decks) {
+          String deckName = deck['name'];
+          int cardCount = deck['cards'].length;
+          int learnedCount =
+              deck['cards'].where((card) => card['studied'] == true).length;
+          updatedDeckData[deckName] = [cardCount, learnedCount];
+        }
+        setState(() {
+          deckData = updatedDeckData;
+        });
+      } else {
+        // TODO: show the user an error message
       }
-      setState(() {
-        deckData = updatedDeckData;
-      });
-    } else {
-      // show the user an error message
+    } catch (e) {
+      // TODO: show the user an error message
     }
   }
 
@@ -53,45 +57,51 @@ class _DecksState extends State<Decks> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 100, left: 40, right: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Decks",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 26,
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top, left: 40, right: 40),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 55),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Decks",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 26,
+                    ),
                   ),
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(8.0),
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (BuildContext context,
-                            Animation<double> animation1,
-                            Animation<double> animation2) {
-                          return const Settings();
-                        },
-                        transitionDuration: Duration.zero,
-                        reverseTransitionDuration: Duration.zero,
-                      ),
-                    );
-                  },
-                  child: const PhosphorIcon(
-                    PhosphorIconsBold.slidersHorizontal,
-                    size: 32.0,
-                    color: Color(0xFF133266),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(8.0),
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation1,
+                              Animation<double> animation2) {
+                            return const Settings();
+                          },
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
+                    },
+                    child: const PhosphorIcon(
+                      PhosphorIconsBold.slidersHorizontal,
+                      size: 32.0,
+                      color: Color(0xFF133266),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
             child: SearchBar(
+              onChanged: // TODO: Implement search functionality on deck name & word
+                  (value) {},
               textStyle: MaterialStateProperty.resolveWith(
                   (states) => const TextStyle(color: Color(0xFF133266))),
               surfaceTintColor:
