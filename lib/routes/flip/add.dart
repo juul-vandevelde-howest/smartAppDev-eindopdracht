@@ -4,11 +4,13 @@ import 'package:flip/routes/flip/decks.dart';
 import 'package:flip/widgets/add_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class Add extends StatefulWidget {
   final dynamic deckName;
   final dynamic editCards;
-  const Add({super.key, this.deckName, this.editCards});
+  final dynamic deckId;
+  const Add({super.key, this.deckName, this.editCards, this.deckId});
 
   @override
   State<Add> createState() => _AddState();
@@ -17,6 +19,7 @@ class Add extends StatefulWidget {
 class _AddState extends State<Add> {
   final List<Map<String, String>> _cards = [];
   String _deckName = '';
+  bool isEdited = false;
 
   @override
   void initState() {
@@ -33,6 +36,7 @@ class _AddState extends State<Add> {
 
   void _updateCardsList(String term, String definition, int index) {
     setState(() {
+      isEdited = true;
       if (term.isEmpty && definition.isEmpty) {
         _cards.removeAt(index);
       } else {
@@ -46,7 +50,33 @@ class _AddState extends State<Add> {
   }
 
   void saveDeck() async {
-    if (_deckName.isEmpty && _cards.isEmpty) {
+    if (widget.editCards != null && widget.editCards.isNotEmpty) {
+      if (!isEdited) {
+        // If editCards is not empty and isEdited is false, go back
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation1,
+                  Animation<double> animation2) {
+                return const Decks();
+              },
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
+        }
+        return;
+      } else {
+        // If editCards is not empty and isEdited is true, save changes
+        var url = Uri.parse(
+            'http://10.0.2.2:3000/decks/${widget.deckId}?name=$_deckName');
+        var requestBody = jsonEncode(_cards);
+        await http.put(url,
+            body: requestBody, headers: {"Content-Type": "application/json"});
+      }
+    } else if (_deckName.isEmpty && _cards.isEmpty) {
+      // If editCards is empty and both _deckName and _cards are empty, go back
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -61,12 +91,13 @@ class _AddState extends State<Add> {
         );
       }
       return;
+    } else {
+      // If editCards is empty and either _deckName or _cards is not empty, save deck
+      var url = Uri.parse('http://10.0.2.2:3000/decks?name=$_deckName');
+      var requestBody = jsonEncode(_cards);
+      await http.post(url,
+          body: requestBody, headers: {"Content-Type": "application/json"});
     }
-
-    var url = Uri.parse('http://10.0.2.2:3000/decks?name=$_deckName');
-    var requestBody = jsonEncode(_cards);
-    await http.post(url,
-        body: requestBody, headers: {"Content-Type": "application/json"});
 
     if (mounted) {
       Navigator.pushReplacement(
@@ -105,6 +136,7 @@ class _AddState extends State<Add> {
                       TextFormField(
                         onChanged: (value) {
                           setState(() {
+                            isEdited = true;
                             _deckName = value;
                           });
                         },
@@ -132,46 +164,83 @@ class _AddState extends State<Add> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 20),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  alignment: Alignment.centerLeft),
-                              onPressed: null,
-                              child: const Text(
-                                'Scan a document',
-                                style: TextStyle(
+                            Row(
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    alignment: Alignment.centerLeft,
+                                  ),
+                                  onPressed: null,
+                                  child: const Text(
+                                    'Scan a document',
+                                    style: TextStyle(
+                                      color: Color(0xFF133266),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Color(0xFF133266),
+                                      decorationThickness: 2,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    alignment: Alignment.centerLeft,
+                                  ),
+                                  onPressed: null,
+                                  child: const Text(
+                                    'Import cards',
+                                    style: TextStyle(
+                                      color: Color(0xFF133266),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Color(0xFF133266),
+                                      decorationThickness: 2,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (widget.editCards != null &&
+                                widget.editCards.isNotEmpty)
+                              InkWell(
+                                borderRadius: BorderRadius.circular(8.0),
+                                onTap: () async {
+                                  var url = Uri.parse(
+                                      'http://10.0.2.2:3000/decks/${widget.deckId}');
+                                  await http.delete(url, headers: {
+                                    "Content-Type": "application/json"
+                                  });
+                                  Future.delayed(Duration.zero, () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (_, __, ___) =>
+                                            const Decks(),
+                                        transitionDuration: Duration.zero,
+                                        reverseTransitionDuration:
+                                            Duration.zero,
+                                      ),
+                                    );
+                                  });
+                                },
+                                child: const PhosphorIcon(
+                                  PhosphorIconsBold.trash,
+                                  size: 32.0,
                                   color: Color(0xFF133266),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Color(0xFF133266),
-                                  decorationThickness: 2,
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 20),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  alignment: Alignment.centerLeft),
-                              onPressed: null,
-                              child: const Text(
-                                'Import deck',
-                                style: TextStyle(
-                                  color: Color(0xFF133266),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Color(0xFF133266),
-                                  decorationThickness: 2,
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -214,7 +283,11 @@ class _AddState extends State<Add> {
                     saveDeck();
                   },
                   child: Text(
-                    _cards.isEmpty && _deckName == '' ? 'Go back' : 'Save deck',
+                    widget.editCards != null && widget.editCards.isNotEmpty
+                        ? (!isEdited ? 'Go back' : 'Save changes')
+                        : _cards.isEmpty && _deckName == ''
+                            ? 'Go back'
+                            : 'Save deck',
                     style: const TextStyle(
                       color: Color(0xFF133266),
                       fontSize: 16,

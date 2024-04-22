@@ -177,6 +177,7 @@ class _DecksState extends State<Decks> {
                               .map(
                                 (deckName) => DeckCard(
                                   name: deckName,
+                                  id: filteredDeckData[deckName]?.elementAt(0),
                                   cardCount: filteredDeckData[deckName]
                                           ?.elementAt(1) ??
                                       0,

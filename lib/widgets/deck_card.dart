@@ -6,6 +6,7 @@ import 'package:flip/widgets/progressbar.dart';
 
 class DeckCard extends StatelessWidget {
   final String name;
+  final String id;
   final int cardCount;
   final int learnedCount;
   final dynamic cards;
@@ -13,6 +14,7 @@ class DeckCard extends StatelessWidget {
   const DeckCard({
     super.key,
     required this.name,
+    required this.id,
     required this.cardCount,
     required this.learnedCount,
     required this.cards,
@@ -96,7 +98,7 @@ class DeckCard extends StatelessWidget {
                           pageBuilder: (BuildContext context,
                               Animation<double> animation1,
                               Animation<double> animation2) {
-                            return Add(deckName: name, editCards: cards);
+                            return Add(deckName: name, editCards: cards, deckId: id);
                           },
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
