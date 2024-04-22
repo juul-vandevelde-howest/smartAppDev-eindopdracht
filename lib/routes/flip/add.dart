@@ -215,24 +215,72 @@ class _AddState extends State<Add> {
                                 widget.deckId.isNotEmpty)
                               InkWell(
                                 borderRadius: BorderRadius.circular(8.0),
-                                onTap: () async {
-                                  var url = Uri.parse(
-                                      'http://10.0.2.2:3000/decks/${widget.deckId}');
-                                  await http.delete(url, headers: {
-                                    "Content-Type": "application/json"
-                                  });
-                                  Future.delayed(Duration.zero, () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      PageRouteBuilder(
-                                        pageBuilder: (_, __, ___) =>
-                                            const Decks(),
-                                        transitionDuration: Duration.zero,
-                                        reverseTransitionDuration:
-                                            Duration.zero,
-                                      ),
-                                    );
-                                  });
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        title: const Text('Delete deck?'),
+                                        content: const Text(
+                                            'This action cannot be undone.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                color: Color(0xFF133266),
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                decorationColor:
+                                                    Color(0xFF133266),
+                                                decorationThickness: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              var url = Uri.parse(
+                                                  'http://10.0.2.2:3000/decks/${widget.deckId}');
+                                              await http.delete(url, headers: {
+                                                "Content-Type":
+                                                    "application/json"
+                                              });
+                                              Future.delayed(Duration.zero, () {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    pageBuilder: (_, __, ___) =>
+                                                        const Decks(),
+                                                    transitionDuration:
+                                                        Duration.zero,
+                                                    reverseTransitionDuration:
+                                                        Duration.zero,
+                                                  ),
+                                                );
+                                              });
+                                            },
+                                            child: const Text('Delete',
+                                                style: TextStyle(
+                                                  color: Color(0xFF133266),
+                                                  fontWeight: FontWeight.bold,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  decorationColor:
+                                                      Color(0xFF133266),
+                                                  decorationThickness: 2,
+                                                )),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                                 child: const PhosphorIcon(
                                   PhosphorIconsBold.trash,
