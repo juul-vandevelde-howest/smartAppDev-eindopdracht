@@ -15,7 +15,7 @@ class Add extends StatefulWidget {
 }
 
 class _AddState extends State<Add> {
-  List<Map<String, String>> _cards = [];
+  final List<Map<String, String>> _cards = [];
   String _deckName = '';
 
   @override

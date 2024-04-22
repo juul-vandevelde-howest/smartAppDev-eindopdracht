@@ -1,11 +1,17 @@
 import 'package:flip/routes/flip/decks.dart';
 import 'package:flip/widgets/progressbar.dart';
-import 'package:flip/widgets/study_card.dart';
+import 'package:flip/widgets/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class Study extends StatelessWidget {
-  const Study({super.key});
+  Study({super.key});
+
+  final List<FlipCard> cards = [
+    const FlipCard(front: "Bonjour", back: "Hello"),
+    const FlipCard(front: "Werkt het", back: "Ja hoor"),
+    const FlipCard(front: "Echt waar?", back: "Uhuh")
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -105,9 +111,9 @@ class Study extends StatelessWidget {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: studyCard(context),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: FlipCard(front: "Bonjour", back: "Hello"),
                 ),
                 const Center(
                   child: Text(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Container studyCard(BuildContext context) {
+Container studyCard(BuildContext context, String word) {
   return Container(
     width: double.infinity,
     height: MediaQuery.of(context).size.height * 0.65,
@@ -25,10 +25,10 @@ Container studyCard(BuildContext context) {
         ),
       ),
     ),
-    child: const Center(
+    child: Center(
       child: Text(
-        "Bonjour",
-        style: TextStyle(
+        word,
+        style: const TextStyle(
           color: Color(0xFF133266),
           fontSize: 24,
           fontWeight: FontWeight.bold,

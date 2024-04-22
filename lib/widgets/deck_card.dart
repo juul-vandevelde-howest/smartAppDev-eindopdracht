@@ -27,7 +27,7 @@ class DeckCard extends StatelessWidget {
           PageRouteBuilder(
             pageBuilder: (BuildContext context, Animation<double> animation1,
                 Animation<double> animation2) {
-              return const Study();
+              return Study();
             },
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,
