@@ -73,47 +73,45 @@ class _DecksState extends State<Decks> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top, left: 40, right: 40),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 55),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Decks",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 26,
-                    ),
+                top: MediaQuery.of(context).padding.top + 55,
+                left: 40,
+                right: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Decks",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
                   ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(8.0),
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation1,
-                              Animation<double> animation2) {
-                            return const Settings();
-                          },
-                          transitionDuration: Duration.zero,
-                          reverseTransitionDuration: Duration.zero,
-                        ),
-                      );
-                    },
-                    child: const PhosphorIcon(
-                      PhosphorIconsBold.slidersHorizontal,
-                      size: 32.0,
-                      color: Color(0xFF133266),
-                    ),
+                ),
+                InkWell(
+                  borderRadius: BorderRadius.circular(8.0),
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (BuildContext context,
+                            Animation<double> animation1,
+                            Animation<double> animation2) {
+                          return const Settings();
+                        },
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
+                      ),
+                    );
+                  },
+                  child: const PhosphorIcon(
+                    PhosphorIconsBold.slidersHorizontal,
+                    size: 32.0,
+                    color: Color(0xFF133266),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -169,34 +167,44 @@ class _DecksState extends State<Decks> {
                             ),
                           ),
                         )
-                      : ListView(
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
-                          padding: EdgeInsets.zero,
-                          children: filteredDeckData.keys
-                              .map(
-                                (deckName) => DeckCard(
-                                  name: deckName,
-                                  id: filteredDeckData[deckName]?.elementAt(0),
-                                  cardCount: filteredDeckData[deckName]
-                                          ?.elementAt(1) ??
-                                      0,
-                                  learnedCount: filteredDeckData[deckName]
-                                          ?.elementAt(2) ??
-                                      0,
-                                  cards: filteredDeckData[deckName]
-                                          ?.elementAt(3) ??
-                                      [],
-                                ),
-                              )
-                              .toList(),
-                        ),
+                      : filteredDeckData.isEmpty
+                          ? const Text(
+                              'No decks found for your search.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : ListView(
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              padding: EdgeInsets.zero,
+                              children: filteredDeckData.keys
+                                  .map(
+                                    (deckName) => DeckCard(
+                                      name: deckName,
+                                      id: filteredDeckData[deckName]
+                                          ?.elementAt(0),
+                                      cardCount: filteredDeckData[deckName]
+                                              ?.elementAt(1) ??
+                                          0,
+                                      learnedCount: filteredDeckData[deckName]
+                                              ?.elementAt(2) ??
+                                          0,
+                                      cards: filteredDeckData[deckName]
+                                              ?.elementAt(3) ??
+                                          [],
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
             ),
           ),
           Container(
             color: const Color(0xFF133266),
             child: Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(40),
               child: Container(
                 width: double.infinity,
                 height: 60,
