@@ -8,9 +8,9 @@ class Study extends StatelessWidget {
   Study({super.key});
 
   final List<FlipCard> cards = [
-    const FlipCard(front: "Bonjour", back: "Hello"),
+    const FlipCard(front: "Echt waar?", back: "Uhuh"),
     const FlipCard(front: "Werkt het", back: "Ja hoor"),
-    const FlipCard(front: "Echt waar?", back: "Uhuh")
+    const FlipCard(front: "Bonjour", back: "Hello"),
   ];
 
   @override
@@ -111,9 +111,12 @@ class Study extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: FlipCard(front: "Bonjour", back: "Hello"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: cards,
+                  ),
                 ),
                 const Center(
                   child: Text(

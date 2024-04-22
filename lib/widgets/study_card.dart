@@ -5,6 +5,7 @@ Container studyCard(BuildContext context, String word) {
     width: double.infinity,
     height: MediaQuery.of(context).size.height * 0.65,
     decoration: BoxDecoration(
+      color: Colors.white,
       borderRadius: BorderRadius.circular(8),
       border: const Border(
         top: BorderSide(

@@ -32,7 +32,8 @@ class FlipCardState extends State<FlipCard>
       direction: DismissDirection.horizontal,
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
-          print("---------------------card still learning---------------------");
+          print(
+              "---------------------card still learning---------------------");
         } else {
           print("---------------------card learned---------------------");
         }
@@ -48,18 +49,21 @@ class FlipCardState extends State<FlipCard>
         child: AnimatedBuilder(
           animation: _controller,
           builder: (_, child) {
-            return Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0)
-                ..rotateY(pi * _controller.value),
-              child: _controller.value < 0.5
-                  ? studyCard(context, widget.front)
-                  : Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()..rotateY(pi),
-                      child: studyCard(context, widget.back),
-                    ),
+            return Container(
+              color: Colors.white,
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.identity()
+                  ..setEntry(3, 2, 0)
+                  ..rotateY(pi * _controller.value),
+                child: _controller.value < 0.5
+                    ? studyCard(context, widget.front)
+                    : Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.identity()..rotateY(pi),
+                        child: studyCard(context, widget.back),
+                      ),
+              ),
             );
           },
         ),
