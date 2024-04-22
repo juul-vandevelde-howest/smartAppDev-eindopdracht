@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flip/routes/flip/decks.dart';
 import 'package:flip/widgets/add_card.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +49,7 @@ class _AddState extends State<Add> {
   }
 
   void saveDeck() async {
-    if (widget.editCards != null && widget.editCards.isNotEmpty) {
+    if (widget.deckId != null && widget.deckId.isNotEmpty) {
       if (!isEdited) {
         // If editCards is not empty and isEdited is false, go back
         if (mounted) {
@@ -212,8 +211,8 @@ class _AddState extends State<Add> {
                                 ),
                               ],
                             ),
-                            if (widget.editCards != null &&
-                                widget.editCards.isNotEmpty)
+                            if (widget.deckId != null &&
+                                widget.deckId.isNotEmpty)
                               InkWell(
                                 borderRadius: BorderRadius.circular(8.0),
                                 onTap: () async {
@@ -283,7 +282,7 @@ class _AddState extends State<Add> {
                     saveDeck();
                   },
                   child: Text(
-                    widget.editCards != null && widget.editCards.isNotEmpty
+                    widget.deckId != null && widget.deckId.isNotEmpty
                         ? (!isEdited ? 'Go back' : 'Save changes')
                         : _cards.isEmpty && _deckName == ''
                             ? 'Go back'
