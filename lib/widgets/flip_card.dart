@@ -36,7 +36,6 @@ class FlipCardState extends State<FlipCard>
       key: UniqueKey(),
       direction: DismissDirection.horizontal,
       onDismissed: (direction) {
-        print("${studyProvider.currentIndex}, ${studyProvider.totalCards}");
         if (direction == DismissDirection.endToStart) {
           studyProvider.updateLearningCount();
         } else {
