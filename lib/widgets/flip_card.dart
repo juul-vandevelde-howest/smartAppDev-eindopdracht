@@ -4,12 +4,18 @@ import 'package:flip/widgets/study_card.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class FlipCard extends StatefulWidget {
   final String front;
   final String back;
+  final String deckId;
 
-  const FlipCard({super.key, required this.front, required this.back});
+  const FlipCard(
+      {super.key,
+      required this.front,
+      required this.back,
+      required this.deckId});
 
   @override
   FlipCardState createState() => FlipCardState();
@@ -35,12 +41,14 @@ class FlipCardState extends State<FlipCard>
     return Dismissible(
       key: UniqueKey(),
       direction: DismissDirection.horizontal,
-      onDismissed: (direction) {
+      onDismissed: (direction) async {
         if (direction == DismissDirection.endToStart) {
           studyProvider.updateLearningCount();
         } else {
           studyProvider.updateKnownCount();
-          // TODO: update islearned in database
+          var url = Uri.parse(
+              'http://10.0.2.2:3000/decks/${widget.deckId}/study?term=${widget.front}');
+          await http.put(url);
         }
         studyProvider.totalCards == studyProvider.currentIndex
             ? Navigator.pushReplacement(
