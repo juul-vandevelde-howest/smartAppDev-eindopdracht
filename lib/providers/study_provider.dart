@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class StudyProvider with ChangeNotifier {
   bool _flipped = false;
   int _currentIndex = 1;
+  int _totalCards = 0;
   int _learningCount = 0;
   int _knownCount = 0;
 

@@ -35,13 +35,15 @@ class FlipCardState extends State<FlipCard>
       key: UniqueKey(),
       direction: DismissDirection.horizontal,
       onDismissed: (direction) {
-        studyProvider.nextCard();
         if (direction == DismissDirection.endToStart) {
           studyProvider.updateLearningCount();
         } else {
           studyProvider.updateKnownCount();
           // TODO: update in database
         }
+        // TODO: if finished, show results
+        
+        studyProvider.nextCard();
       },
       child: GestureDetector(
         onTap: () {

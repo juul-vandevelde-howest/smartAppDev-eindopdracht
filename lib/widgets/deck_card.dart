@@ -24,17 +24,31 @@ class DeckCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (BuildContext context, Animation<double> animation1,
-                Animation<double> animation2) {
-              return Study(deckId: id, deckData: cards);
-            },
-            transitionDuration: Duration.zero,
-            reverseTransitionDuration: Duration.zero,
-          ),
-        );
+        cardCount != 0
+            ? Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation1,
+                      Animation<double> animation2) {
+                    return Study(deckId: id, deckData: cards);
+                  },
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              )
+            : Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation1,
+                      Animation<double> animation2) {
+                    return Add(deckName: name, editCards: cards, deckId: id);
+                  },
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
