@@ -6,31 +6,48 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flip/providers/study_provider.dart';
 
-class Study extends StatelessWidget {
+class Study extends StatefulWidget {
   final String deckId;
   final dynamic deckData;
   const Study({super.key, required this.deckId, required this.deckData});
 
   @override
-  Widget build(BuildContext context) {
-    var studyProvider = Provider.of<StudyProvider>(context);
+  State<Study> createState() => _StudyState();
+}
 
-    final List<FlipCard> cards = deckData
+class _StudyState extends State<Study> {
+  late List<FlipCard> cards;
+  late int cardsLength;
+  int currentIndex = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    cards = widget.deckData
         .where((card) => card['studied'] == false)
         .map((card) => FlipCard(front: card['term'], back: card['definition']))
         .toList()
         .cast<FlipCard>();
-
     cards.shuffle();
+    cardsLength = cards.length;
+  }
 
-    if (studyProvider.totalCards != cards.length) {
+  @override
+  Widget build(BuildContext context) {
+    var studyProvider = Provider.of<StudyProvider>(context);
+
+    if (studyProvider.totalCards != cardsLength) {
       Future.delayed(Duration.zero, () {
-        studyProvider.setTotalCards(cards.length);
+        studyProvider.setTotalCards(cardsLength);
       });
     }
 
+    if (studyProvider.currentIndex != currentIndex) {
+      currentIndex = studyProvider.currentIndex;
+      cards.removeLast();
+    }
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -65,7 +82,7 @@ class Study extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${studyProvider.currentIndex}/${cards.length}",
+                      "${studyProvider.currentIndex}/$cardsLength",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
@@ -76,7 +93,7 @@ class Study extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Progressbar(
-                      value: studyProvider.currentIndex / cards.length),
+                      value: studyProvider.currentIndex / cardsLength),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
