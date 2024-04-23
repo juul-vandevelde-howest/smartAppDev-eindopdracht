@@ -23,6 +23,12 @@ class Study extends StatelessWidget {
 
     cards.shuffle();
 
+    if (studyProvider.totalCards != cards.length) {
+      Future.delayed(Duration.zero, () {
+        studyProvider.setTotalCards(cards.length);
+      });
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(

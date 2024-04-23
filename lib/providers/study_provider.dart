@@ -11,6 +11,7 @@ class StudyProvider with ChangeNotifier {
   int get currentIndex => _currentIndex;
   int get learningCount => _learningCount;
   int get knownCount => _knownCount;
+  int get totalCards => _totalCards;
 
   void flip() {
     _flipped = true;
@@ -29,6 +30,11 @@ class StudyProvider with ChangeNotifier {
 
   void updateKnownCount() {
     _knownCount++;
+    notifyListeners();
+  }
+
+  void setTotalCards(int totalCards) {
+    _totalCards = totalCards;
     notifyListeners();
   }
 

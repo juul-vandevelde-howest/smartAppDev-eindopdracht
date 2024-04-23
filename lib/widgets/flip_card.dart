@@ -1,4 +1,5 @@
 import 'package:flip/providers/study_provider.dart';
+import 'package:flip/routes/flip/results.dart';
 import 'package:flip/widgets/study_card.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -39,11 +40,22 @@ class FlipCardState extends State<FlipCard>
           studyProvider.updateLearningCount();
         } else {
           studyProvider.updateKnownCount();
-          // TODO: update in database
+          // TODO: update islearned in database
         }
-        // TODO: if finished, show results
-        
-        studyProvider.nextCard();
+        studyProvider.totalCards == studyProvider.currentIndex
+            ? Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation1,
+                      Animation<double> animation2) {
+                    return const Results();
+                  },
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              )
+            : studyProvider.nextCard();
       },
       child: GestureDetector(
         onTap: () {
