@@ -3,18 +3,26 @@ import 'package:flip/widgets/progressbar.dart';
 import 'package:flip/widgets/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:flip/providers/study_provider.dart';
 
 class Study extends StatelessWidget {
-  Study({super.key});
-
-  final List<FlipCard> cards = [
-    const FlipCard(front: "Echt waar?", back: "Uhuh"),
-    const FlipCard(front: "Werkt het", back: "Ja hoor"),
-    const FlipCard(front: "Bonjour", back: "Hello"),
-  ];
+  final String deckId;
+  final dynamic deckData;
+  const Study({super.key, required this.deckId, required this.deckData});
 
   @override
   Widget build(BuildContext context) {
+    var studyProvider = Provider.of<StudyProvider>(context);
+
+    final List<FlipCard> cards = deckData
+        .where((card) => card['studied'] == false)
+        .map((card) => FlipCard(front: card['term'], back: card['definition']))
+        .toList()
+        .cast<FlipCard>();
+
+    cards.shuffle();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -30,6 +38,7 @@ class Study extends StatelessWidget {
                     InkWell(
                       borderRadius: BorderRadius.circular(8.0),
                       onTap: () {
+                        studyProvider.reset();
                         Navigator.pushReplacement(
                           context,
                           PageRouteBuilder(
@@ -49,18 +58,19 @@ class Study extends StatelessWidget {
                         color: Color(0xFF133266),
                       ),
                     ),
-                    const Text(
-                      "2/25",
-                      style: TextStyle(
+                    Text(
+                      "${studyProvider.currentIndex}/${cards.length}",
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Progressbar(value: 0.08),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Progressbar(
+                      value: studyProvider.currentIndex / cards.length),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,14 +83,14 @@ class Study extends StatelessWidget {
                           width: 4,
                         ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
                         ),
                         child: Text(
-                          "1 still learning",
-                          style: TextStyle(
+                          "${studyProvider.learningCount} still learning",
+                          style: const TextStyle(
                             color: Color(0xFF133266),
                             fontWeight: FontWeight.bold,
                           ),
@@ -95,14 +105,14 @@ class Study extends StatelessWidget {
                           width: 4,
                         ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
                         ),
                         child: Text(
-                          "0 known",
-                          style: TextStyle(
+                          "${studyProvider.knownCount} known",
+                          style: const TextStyle(
                             color: Color(0xFF133266),
                             fontWeight: FontWeight.bold,
                           ),
@@ -118,10 +128,13 @@ class Study extends StatelessWidget {
                     children: cards,
                   ),
                 ),
-                const Center(
+                Center(
                   child: Text(
-                    "Tap the card to flip it",
-                    style: TextStyle(
+                    studyProvider.flipped
+                        ? "Swipe left to mark as Still Learning\nSwipe right to mark as Known"
+                        : "Tap the card to flip it",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
                       color: Color(0xFF133266),
                       fontSize: 16,
                     ),

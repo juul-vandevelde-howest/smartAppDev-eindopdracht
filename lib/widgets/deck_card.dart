@@ -29,7 +29,7 @@ class DeckCard extends StatelessWidget {
           PageRouteBuilder(
             pageBuilder: (BuildContext context, Animation<double> animation1,
                 Animation<double> animation2) {
-              return Study();
+              return Study(deckId: id, deckData: cards);
             },
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,
@@ -98,7 +98,8 @@ class DeckCard extends StatelessWidget {
                           pageBuilder: (BuildContext context,
                               Animation<double> animation1,
                               Animation<double> animation2) {
-                            return Add(deckName: name, editCards: cards, deckId: id);
+                            return Add(
+                                deckName: name, editCards: cards, deckId: id);
                           },
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,

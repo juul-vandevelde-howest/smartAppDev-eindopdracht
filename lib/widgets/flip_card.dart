@@ -1,6 +1,8 @@
+import 'package:flip/providers/study_provider.dart';
 import 'package:flip/widgets/study_card.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:provider/provider.dart';
 
 class FlipCard extends StatefulWidget {
   final String front;
@@ -27,19 +29,23 @@ class FlipCardState extends State<FlipCard>
 
   @override
   Widget build(BuildContext context) {
+    var studyProvider = Provider.of<StudyProvider>(context);
+
     return Dismissible(
       key: UniqueKey(),
       direction: DismissDirection.horizontal,
       onDismissed: (direction) {
+        studyProvider.nextCard();
         if (direction == DismissDirection.endToStart) {
-          print(
-              "---------------------card still learning---------------------");
+          studyProvider.updateLearningCount();
         } else {
-          print("---------------------card learned---------------------");
+          studyProvider.updateKnownCount();
+          // TODO: update in database
         }
       },
       child: GestureDetector(
         onTap: () {
+          studyProvider.flip();
           if (_controller.isDismissed) {
             _controller.forward();
           } else {

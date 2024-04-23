@@ -28,7 +28,7 @@ Container studyCard(BuildContext context, String word) {
     ),
     child: Center(
       child: Text(
-        word,
+        word.isEmpty ? '(Draft)' : word,
         style: const TextStyle(
           color: Color(0xFF133266),
           fontSize: 24,
