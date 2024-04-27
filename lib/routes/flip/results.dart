@@ -121,65 +121,66 @@ class Results extends StatelessWidget {
                       ),
                   ],
                 ),
-                studyProvider.learningCount + studyProvider.knownCount > 0
-                    ? const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Progressbar(value: 1),
-                      )
-                    : const SizedBox(height: 40),
-                studyProvider.learningCount + studyProvider.knownCount > 0
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(
-                                color: const Color(0xFF133266),
-                                width: 4,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              child: Text(
-                                "${studyProvider.learningCount} still learning",
-                                style: const TextStyle(
-                                  color: Color(0xFF133266),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                if (studyProvider.learningCount + studyProvider.knownCount > 0)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Progressbar(value: 1),
+                  ),
+                if (studyProvider.learningCount + studyProvider.knownCount > 0)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(
+                            color: const Color(0xFF133266),
+                            width: 4,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: Text(
+                            "${studyProvider.learningCount} still learning",
+                            style: const TextStyle(
+                              color: Color(0xFF133266),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(
-                                color: const Color(0xFF133266),
-                                width: 4,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              child: Text(
-                                "${studyProvider.knownCount} known",
-                                style: const TextStyle(
-                                  color: Color(0xFF133266),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(
+                            color: const Color(0xFF133266),
+                            width: 4,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: Text(
+                            "${studyProvider.knownCount} known",
+                            style: const TextStyle(
+                              color: Color(0xFF133266),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      )
-                    : const SizedBox(height: 16),
+                        ),
+                      ),
+                    ],
+                  ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.72,
+                  height:
+                      studyProvider.learningCount + studyProvider.knownCount > 0
+                          ? MediaQuery.of(context).size.height * 0.72
+                          : MediaQuery.of(context).size.height * 0.82,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,

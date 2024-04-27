@@ -1,9 +1,11 @@
+import 'package:flip/providers/study_provider.dart';
 import 'package:flip/routes/flip/add.dart';
 import 'package:flip/routes/flip/results.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flip/routes/flip/study.dart';
 import 'package:flip/widgets/progressbar.dart';
+import 'package:provider/provider.dart';
 
 class DeckCard extends StatelessWidget {
   final String name;
@@ -23,8 +25,11 @@ class DeckCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var studyProvider = Provider.of<StudyProvider>(context);
+
     return GestureDetector(
       onTap: () {
+        studyProvider.setDeckId(id);
         cardCount != 0
             ? Navigator.pushReplacement(
                 context,
