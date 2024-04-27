@@ -270,11 +270,6 @@ class _AddState extends State<Add> {
                                                 style: TextStyle(
                                                   color: Color(0xFF133266),
                                                   fontWeight: FontWeight.bold,
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  decorationColor:
-                                                      Color(0xFF133266),
-                                                  decorationThickness: 2,
                                                 )),
                                           ),
                                         ],

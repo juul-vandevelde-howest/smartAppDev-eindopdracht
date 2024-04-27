@@ -6,16 +6,22 @@ class StudyProvider with ChangeNotifier {
   int _totalCards = 0;
   int _learningCount = 0;
   int _knownCount = 0;
+  String _deckId = '';
 
   bool get flipped => _flipped;
   int get currentIndex => _currentIndex;
   int get learningCount => _learningCount;
   int get knownCount => _knownCount;
   int get totalCards => _totalCards;
+  String get deckId => _deckId;
 
   void flip() {
     _flipped = true;
     notifyListeners();
+  }
+
+  void setDeckId(String deckId) {
+    _deckId = deckId;
   }
 
   void nextCard() {

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flip/providers/study_provider.dart';
 import 'package:flip/routes/flip/decks.dart';
+import 'package:flip/routes/flip/study.dart';
 import 'package:flip/widgets/progressbar.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class Results extends StatelessWidget {
   const Results({super.key});
@@ -11,6 +15,67 @@ class Results extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var studyProvider = Provider.of<StudyProvider>(context);
+
+    goToDecks() {
+      studyProvider.reset();
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation1,
+              Animation<double> animation2) {
+            return const Decks();
+          },
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
+    }
+
+    continueDeck() async {
+      var url = Uri.parse('http://10.0.2.2:3000/decks/${studyProvider.deckId}');
+      final response =
+          await http.get(url, headers: {"Content-Type": "application/json"});
+      final Map<String, dynamic> deckData = jsonDecode(response.body);
+      studyProvider.reset();
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation1,
+              Animation<double> animation2) {
+            return Study(
+              deckId: deckData['id'],
+              deckData: deckData['cards'],
+            );
+          },
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
+    }
+
+    restartDeck() async {
+      var url =
+          Uri.parse('http://10.0.2.2:3000/decks/${studyProvider.deckId}/reset');
+      final response =
+          await http.put(url, headers: {"Content-Type": "application/json"});
+      final Map<String, dynamic> deckData = jsonDecode(response.body);
+      studyProvider.reset();
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation1,
+              Animation<double> animation2) {
+            return Study(
+              deckId: deckData['id'],
+              deckData: deckData['cards'],
+            );
+          },
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
+    }
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,6 +122,131 @@ class Results extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Progressbar(value: 1),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color: const Color(0xFF133266),
+                          width: 4,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Text(
+                          "${studyProvider.learningCount} still learning",
+                          style: const TextStyle(
+                            color: Color(0xFF133266),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color: const Color(0xFF133266),
+                          width: 4,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Text(
+                          "${studyProvider.knownCount} known",
+                          style: const TextStyle(
+                            color: Color(0xFF133266),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.72,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 0),
+                      Text(
+                        studyProvider.knownCount == studyProvider.totalCards
+                            ? "Congratulations! You've mastered all the terms."
+                            : "You are doing brilliantly! Keep focussing on the tough terms.",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF133266),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: TextButton(
+                              onPressed: () {
+                                studyProvider.knownCount ==
+                                        studyProvider.totalCards
+                                    ? restartDeck()
+                                    : continueDeck();
+                              },
+                              child: Text(
+                                studyProvider.knownCount ==
+                                        studyProvider.totalCards
+                                    ? 'Restart Flashcards'
+                                    : 'Keep Studying',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              studyProvider.knownCount ==
+                                      studyProvider.totalCards
+                                  ? goToDecks()
+                                  : restartDeck();
+                            },
+                            style: ButtonStyle(
+                              padding:
+                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                EdgeInsets.zero,
+                              ),
+                            ),
+                            child: Text(
+                              studyProvider.knownCount ==
+                                      studyProvider.totalCards
+                                  ? 'Go to your Decks'
+                                  : 'Restart Flashcards',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF133266),
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

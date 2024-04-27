@@ -22,6 +22,9 @@ class _LoginState extends State<Login> {
         final credential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         if (credential.user != null) {
+          String? idToken = await credential.user!.getIdToken();
+          print('idToken: $idToken');
+          // TODO: use this token to authenticate with the backend & get only this user's data
           if (mounted) {
             Navigator.pushReplacement(
               context,

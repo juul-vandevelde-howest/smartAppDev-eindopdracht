@@ -25,7 +25,10 @@ class _StudyState extends State<Study> {
     super.initState();
     cards = widget.deckData
         .where((card) => card['studied'] == false)
-        .map((card) => FlipCard(front: card['term'], back: card['definition'], deckId: widget.deckId))
+        .map((card) => FlipCard(
+            front: card['term'],
+            back: card['definition'],
+            deckId: widget.deckId))
         .toList()
         .cast<FlipCard>();
     cards.shuffle();
@@ -39,6 +42,7 @@ class _StudyState extends State<Study> {
     if (studyProvider.totalCards != cardsLength) {
       Future.delayed(Duration.zero, () {
         studyProvider.setTotalCards(cardsLength);
+        studyProvider.setDeckId(widget.deckId);
       });
     }
 
