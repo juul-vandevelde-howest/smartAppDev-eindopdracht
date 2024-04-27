@@ -110,68 +110,74 @@ class Results extends StatelessWidget {
                         color: Color(0xFF133266),
                       ),
                     ),
-                    Text(
-                      "${studyProvider.currentIndex}/${studyProvider.currentIndex}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
+                    if (studyProvider.learningCount + studyProvider.knownCount >
+                        0)
+                      Text(
+                        "${studyProvider.currentIndex}/${studyProvider.currentIndex}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
                       ),
-                    ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Progressbar(value: 1),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: const Color(0xFF133266),
-                          width: 4,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: Text(
-                          "${studyProvider.learningCount} still learning",
-                          style: const TextStyle(
-                            color: Color(0xFF133266),
-                            fontWeight: FontWeight.bold,
+                studyProvider.learningCount + studyProvider.knownCount > 0
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Progressbar(value: 1),
+                      )
+                    : const SizedBox(height: 40),
+                studyProvider.learningCount + studyProvider.knownCount > 0
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                color: const Color(0xFF133266),
+                                width: 4,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              child: Text(
+                                "${studyProvider.learningCount} still learning",
+                                style: const TextStyle(
+                                  color: Color(0xFF133266),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: const Color(0xFF133266),
-                          width: 4,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: Text(
-                          "${studyProvider.knownCount} known",
-                          style: const TextStyle(
-                            color: Color(0xFF133266),
-                            fontWeight: FontWeight.bold,
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                color: const Color(0xFF133266),
+                                width: 4,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              child: Text(
+                                "${studyProvider.knownCount} known",
+                                style: const TextStyle(
+                                  color: Color(0xFF133266),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                        ],
+                      )
+                    : const SizedBox(height: 16),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.72,
                   child: Column(
@@ -180,9 +186,14 @@ class Results extends StatelessWidget {
                     children: [
                       const SizedBox(height: 0),
                       Text(
-                        studyProvider.knownCount == studyProvider.totalCards
-                            ? "Congratulations! You've mastered all the terms."
-                            : "You are doing brilliantly! Keep focussing on the tough terms.",
+                        (studyProvider.learningCount +
+                                    studyProvider.knownCount ==
+                                0)
+                            ? "You've already mastered all the terms."
+                            : (studyProvider.knownCount ==
+                                    studyProvider.totalCards
+                                ? "Congratulations! You've mastered all the terms."
+                                : "You are doing brilliantly! Keep focussing on the tough terms."),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -201,14 +212,20 @@ class Results extends StatelessWidget {
                             child: TextButton(
                               onPressed: () {
                                 studyProvider.knownCount ==
-                                        studyProvider.totalCards
+                                            studyProvider.totalCards ||
+                                        studyProvider.learningCount +
+                                                studyProvider.knownCount ==
+                                            0
                                     ? restartDeck()
                                     : continueDeck();
                               },
                               child: Text(
                                 studyProvider.knownCount ==
-                                        studyProvider.totalCards
-                                    ? 'Restart Flashcards'
+                                            studyProvider.totalCards ||
+                                        studyProvider.learningCount +
+                                                studyProvider.knownCount ==
+                                            0
+                                    ? 'Restart Deck'
                                     : 'Keep Studying',
                                 style: const TextStyle(
                                   color: Colors.white,
@@ -220,7 +237,10 @@ class Results extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               studyProvider.knownCount ==
-                                      studyProvider.totalCards
+                                          studyProvider.totalCards ||
+                                      studyProvider.learningCount +
+                                              studyProvider.knownCount ==
+                                          0
                                   ? goToDecks()
                                   : restartDeck();
                             },
@@ -232,9 +252,12 @@ class Results extends StatelessWidget {
                             ),
                             child: Text(
                               studyProvider.knownCount ==
-                                      studyProvider.totalCards
-                                  ? 'Go to your Decks'
-                                  : 'Restart Flashcards',
+                                          studyProvider.totalCards ||
+                                      studyProvider.learningCount +
+                                              studyProvider.knownCount ==
+                                          0
+                                  ? 'Go back to Decks'
+                                  : 'Restart Deck',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

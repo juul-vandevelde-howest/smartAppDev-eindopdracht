@@ -1,4 +1,5 @@
 import 'package:flip/routes/flip/add.dart';
+import 'package:flip/routes/flip/results.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flip/routes/flip/study.dart';
@@ -31,7 +32,9 @@ class DeckCard extends StatelessWidget {
                   pageBuilder: (BuildContext context,
                       Animation<double> animation1,
                       Animation<double> animation2) {
-                    return Study(deckId: id, deckData: cards);
+                    return learnedCount == cardCount
+                        ? const Results()
+                        : Study(deckId: id, deckData: cards);
                   },
                   transitionDuration: Duration.zero,
                   reverseTransitionDuration: Duration.zero,
