@@ -4,6 +4,7 @@ import 'package:flip/widgets/add_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Add extends StatefulWidget {
   final dynamic deckName;
@@ -68,11 +69,19 @@ class _AddState extends State<Add> {
         return;
       } else {
         // If editCards is not empty and isEdited is true, save changes
+        FirebaseAuth auth = FirebaseAuth.instance;
+        String? idToken = await auth.currentUser?.getIdToken();
         var url = Uri.parse(
             'http://10.0.2.2:3000/decks/${widget.deckId}?name=$_deckName');
         var requestBody = jsonEncode(_cards);
-        await http.put(url,
-            body: requestBody, headers: {"Content-Type": "application/json"});
+        await http.put(
+          url,
+          body: requestBody,
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $idToken',
+          },
+        );
       }
     } else if (_deckName.isEmpty && _cards.isEmpty) {
       // If editCards is empty and both _deckName and _cards are empty, go back
@@ -92,10 +101,14 @@ class _AddState extends State<Add> {
       return;
     } else {
       // If editCards is empty and either _deckName or _cards is not empty, save deck
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String? idToken = await auth.currentUser?.getIdToken();
       var url = Uri.parse('http://10.0.2.2:3000/decks?name=$_deckName');
       var requestBody = jsonEncode(_cards);
-      await http.post(url,
-          body: requestBody, headers: {"Content-Type": "application/json"});
+      await http.post(url, body: requestBody, headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $idToken',
+      });
     }
 
     if (mounted) {
@@ -246,11 +259,18 @@ class _AddState extends State<Add> {
                                           ),
                                           TextButton(
                                             onPressed: () async {
+                                              FirebaseAuth auth =
+                                                  FirebaseAuth.instance;
+                                              String? idToken = await auth
+                                                  .currentUser
+                                                  ?.getIdToken();
                                               var url = Uri.parse(
                                                   'http://10.0.2.2:3000/decks/${widget.deckId}');
                                               await http.delete(url, headers: {
                                                 "Content-Type":
-                                                    "application/json"
+                                                    "application/json",
+                                                'Authorization':
+                                                    'Bearer $idToken',
                                               });
                                               Future.delayed(Duration.zero, () {
                                                 Navigator.pushReplacement(

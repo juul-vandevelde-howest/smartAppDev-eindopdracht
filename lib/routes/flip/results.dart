@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flip/providers/study_provider.dart';
 import 'package:flip/routes/flip/decks.dart';
 import 'package:flip/routes/flip/study.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Results extends StatelessWidget {
   const Results({super.key});
@@ -32,9 +32,16 @@ class Results extends StatelessWidget {
     }
 
     continueDeck() async {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String? idToken = await auth.currentUser?.getIdToken();
       var url = Uri.parse('http://10.0.2.2:3000/decks/${studyProvider.deckId}');
-      final response =
-          await http.get(url, headers: {"Content-Type": "application/json"});
+      final response = await http.get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $idToken',
+        },
+      );
       final Map<String, dynamic> deckData = jsonDecode(response.body);
       studyProvider.reset();
       Navigator.pushReplacement(
@@ -54,10 +61,18 @@ class Results extends StatelessWidget {
     }
 
     restartDeck() async {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String? idToken = await auth.currentUser?.getIdToken();
       var url =
           Uri.parse('http://10.0.2.2:3000/decks/${studyProvider.deckId}/reset');
-      final response =
-          await http.put(url, headers: {"Content-Type": "application/json"});
+      final response = await http.put(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $idToken',
+        },
+      );
+      await http.put(url, headers: {"Content-Type": "application/json"});
       final Map<String, dynamic> deckData = jsonDecode(response.body);
       studyProvider.reset();
       Navigator.pushReplacement(

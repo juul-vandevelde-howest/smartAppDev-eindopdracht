@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FlipCard extends StatefulWidget {
   final String front;
@@ -46,9 +47,14 @@ class FlipCardState extends State<FlipCard>
           studyProvider.updateLearningCount();
         } else {
           studyProvider.updateKnownCount();
+          FirebaseAuth auth = FirebaseAuth.instance;
+          String? idToken = await auth.currentUser?.getIdToken();
           var url = Uri.parse(
               'http://10.0.2.2:3000/decks/${widget.deckId}/study?term=${widget.front}');
-          await http.put(url);
+          await http.put(
+            url,
+            headers: {'Authorization': 'Bearer $idToken'},
+          );
         }
         studyProvider.totalCards == studyProvider.currentIndex
             ? Navigator.pushReplacement(

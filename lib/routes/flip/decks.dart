@@ -6,6 +6,7 @@ import 'package:flip/widgets/deck_card.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Decks extends StatefulWidget {
   const Decks({super.key});
@@ -28,7 +29,12 @@ class _DecksState extends State<Decks> {
 
   Future<void> fetchData() async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:3000/decks'));
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String? idToken = await auth.currentUser?.getIdToken();
+      final response = await http.get(
+        Uri.parse('http://10.0.2.2:3000/decks'),
+        headers: {'Authorization': 'Bearer $idToken'},
+      );
       if (response.statusCode == 200) {
         final List<dynamic> decks = jsonDecode(response.body);
         Map<String, List<dynamic>> updatedDeckData = {};
