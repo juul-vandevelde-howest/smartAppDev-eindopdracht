@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flip/routes/flip/decks.dart';
+import 'package:flip/routes/flip/scan.dart';
 import 'package:flip/widgets/add_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -188,7 +189,21 @@ class _AddState extends State<Add> {
                                         MaterialTapTargetSize.shrinkWrap,
                                     alignment: Alignment.centerLeft,
                                   ),
-                                  onPressed: null,
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (BuildContext context,
+                                            Animation<double> animation1,
+                                            Animation<double> animation2) {
+                                          return const Scan();
+                                        },
+                                        transitionDuration: Duration.zero,
+                                        reverseTransitionDuration:
+                                            Duration.zero,
+                                      ),
+                                    );
+                                  },
                                   child: const Text(
                                     'Scan a document',
                                     style: TextStyle(
