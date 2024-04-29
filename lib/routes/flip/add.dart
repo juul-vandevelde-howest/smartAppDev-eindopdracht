@@ -163,7 +163,11 @@ class _AddState extends State<Add> {
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
                                             ),
-                                            title: const Text('Delete deck?'),
+                                            title: const Text(
+                                              'Delete deck?',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                             content: const Text(
                                               'This action cannot be undone. Are you sure you want to delete this deck?',
                                               style: TextStyle(
@@ -179,6 +183,7 @@ class _AddState extends State<Add> {
                                                   'Cancel',
                                                   style: TextStyle(
                                                     color: Color(0xFF133266),
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
                                               ),
