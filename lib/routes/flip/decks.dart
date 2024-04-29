@@ -67,10 +67,10 @@ class _DecksState extends State<Decks> {
           filteredDeckData = updatedDeckData;
         });
       } else {
-        // TODO: show the user an error message
+        null;
       }
     } catch (e) {
-      // TODO: show the user an error message
+      null;
     }
   }
 

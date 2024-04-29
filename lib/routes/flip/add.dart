@@ -180,65 +180,72 @@ class _AddState extends State<Add> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(
-                              children: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    alignment: Alignment.centerLeft,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      PageRouteBuilder(
-                                        pageBuilder: (BuildContext context,
-                                            Animation<double> animation1,
-                                            Animation<double> animation2) {
-                                          return const Scan();
+                            widget.editCards == null || widget.editCards.isEmpty
+                                ? Row(
+                                    children: [
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          alignment: Alignment.centerLeft,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            PageRouteBuilder(
+                                              pageBuilder: (BuildContext
+                                                      context,
+                                                  Animation<double> animation1,
+                                                  Animation<double>
+                                                      animation2) {
+                                                return const Scan();
+                                              },
+                                              transitionDuration: Duration.zero,
+                                              reverseTransitionDuration:
+                                                  Duration.zero,
+                                            ),
+                                          );
                                         },
-                                        transitionDuration: Duration.zero,
-                                        reverseTransitionDuration:
-                                            Duration.zero,
+                                        child: const Text(
+                                          'Scan a document (beta)',
+                                          style: TextStyle(
+                                            color: Color(0xFF133266),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: Color(0xFF133266),
+                                            decorationThickness: 2,
+                                          ),
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Scan a document',
-                                    style: TextStyle(
-                                      color: Color(0xFF133266),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Color(0xFF133266),
-                                      decorationThickness: 2,
-                                    ),
+                                      // const SizedBox(width: 20),
+                                      // TextButton(
+                                      //   style: TextButton.styleFrom(
+                                      //     padding: EdgeInsets.zero,
+                                      //     tapTargetSize:
+                                      //         MaterialTapTargetSize.shrinkWrap,
+                                      //     alignment: Alignment.centerLeft,
+                                      //   ),
+                                      //   onPressed: null,
+                                      //   child: const Text(
+                                      //     'Import cards',
+                                      //     style: TextStyle(
+                                      //       color: Color(0xFF133266),
+                                      //       fontSize: 16,
+                                      //       fontWeight: FontWeight.bold,
+                                      //       decoration: TextDecoration.underline,
+                                      //       decorationColor: Color(0xFF133266),
+                                      //       decorationThickness: 2,
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  )
+                                : const SizedBox(
+                                    height: 0,
                                   ),
-                                ),
-                                const SizedBox(width: 20),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    alignment: Alignment.centerLeft,
-                                  ),
-                                  onPressed: null,
-                                  child: const Text(
-                                    'Import cards',
-                                    style: TextStyle(
-                                      color: Color(0xFF133266),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Color(0xFF133266),
-                                      decorationThickness: 2,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                             if (widget.deckId != null &&
                                 widget.deckId.isNotEmpty)
                               InkWell(
