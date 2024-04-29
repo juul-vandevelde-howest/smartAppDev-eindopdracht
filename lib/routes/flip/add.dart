@@ -145,7 +145,107 @@ class _AddState extends State<Add> {
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     padding: EdgeInsets.zero,
                     children: [
-                      const SizedBox(height: 55),
+                      widget.deckId != null && widget.deckId.isNotEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 30),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                            title: const Text('Delete deck?'),
+                                            content: const Text(
+                                              'This action cannot be undone. Are you sure you want to delete this deck?',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                    color: Color(0xFF133266),
+                                                  ),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color(0xFF661332),
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                ),
+                                                onPressed: () async {
+                                                  FirebaseAuth auth =
+                                                      FirebaseAuth.instance;
+                                                  String? idToken = await auth
+                                                      .currentUser
+                                                      ?.getIdToken();
+                                                  var url = Uri.parse(
+                                                      'http://10.0.2.2:3000/decks/${widget.deckId}');
+                                                  await http
+                                                      .delete(url, headers: {
+                                                    "Content-Type":
+                                                        "application/json",
+                                                    'Authorization':
+                                                        'Bearer $idToken',
+                                                  });
+                                                  Future.delayed(Duration.zero,
+                                                      () {
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      PageRouteBuilder(
+                                                        pageBuilder:
+                                                            (_, __, ___) =>
+                                                                const Decks(),
+                                                        transitionDuration:
+                                                            Duration.zero,
+                                                        reverseTransitionDuration:
+                                                            Duration.zero,
+                                                      ),
+                                                    );
+                                                  });
+                                                },
+                                                child: const Text('Delete',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    )),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const PhosphorIcon(
+                                      PhosphorIconsBold.trash,
+                                      size: 32.0,
+                                      color: Color(0xFF661332),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox(height: 55),
                       TextFormField(
                         onChanged: (value) {
                           setState(() {
@@ -176,157 +276,70 @@ class _AddState extends State<Add> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            widget.editCards == null || widget.editCards.isEmpty
-                                ? Row(
-                                    children: [
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          tapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          alignment: Alignment.centerLeft,
+                        child: widget.editCards == null ||
+                                widget.editCards.isEmpty
+                            ? Row(
+                                children: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      alignment: Alignment.centerLeft,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (BuildContext context,
+                                              Animation<double> animation1,
+                                              Animation<double> animation2) {
+                                            return const Scan();
+                                          },
+                                          transitionDuration: Duration.zero,
+                                          reverseTransitionDuration:
+                                              Duration.zero,
                                         ),
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            PageRouteBuilder(
-                                              pageBuilder: (BuildContext
-                                                      context,
-                                                  Animation<double> animation1,
-                                                  Animation<double>
-                                                      animation2) {
-                                                return const Scan();
-                                              },
-                                              transitionDuration: Duration.zero,
-                                              reverseTransitionDuration:
-                                                  Duration.zero,
-                                            ),
-                                          );
-                                        },
-                                        child: const Text(
-                                          'Scan a document (beta)',
-                                          style: TextStyle(
-                                            color: Color(0xFF133266),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor: Color(0xFF133266),
-                                            decorationThickness: 2,
-                                          ),
-                                        ),
-                                      ),
-                                      // const SizedBox(width: 20),
-                                      // TextButton(
-                                      //   style: TextButton.styleFrom(
-                                      //     padding: EdgeInsets.zero,
-                                      //     tapTargetSize:
-                                      //         MaterialTapTargetSize.shrinkWrap,
-                                      //     alignment: Alignment.centerLeft,
-                                      //   ),
-                                      //   onPressed: null,
-                                      //   child: const Text(
-                                      //     'Import cards',
-                                      //     style: TextStyle(
-                                      //       color: Color(0xFF133266),
-                                      //       fontSize: 16,
-                                      //       fontWeight: FontWeight.bold,
-                                      //       decoration: TextDecoration.underline,
-                                      //       decorationColor: Color(0xFF133266),
-                                      //       decorationThickness: 2,
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                    ],
-                                  )
-                                : const SizedBox(
-                                    height: 0,
-                                  ),
-                            if (widget.deckId != null &&
-                                widget.deckId.isNotEmpty)
-                              InkWell(
-                                borderRadius: BorderRadius.circular(8.0),
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        title: const Text('Delete deck?'),
-                                        content: const Text(
-                                            'This action cannot be undone.'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                color: Color(0xFF133266),
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                decorationColor:
-                                                    Color(0xFF133266),
-                                                decorationThickness: 2,
-                                              ),
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () async {
-                                              FirebaseAuth auth =
-                                                  FirebaseAuth.instance;
-                                              String? idToken = await auth
-                                                  .currentUser
-                                                  ?.getIdToken();
-                                              var url = Uri.parse(
-                                                  'http://10.0.2.2:3000/decks/${widget.deckId}');
-                                              await http.delete(url, headers: {
-                                                "Content-Type":
-                                                    "application/json",
-                                                'Authorization':
-                                                    'Bearer $idToken',
-                                              });
-                                              Future.delayed(Duration.zero, () {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                    pageBuilder: (_, __, ___) =>
-                                                        const Decks(),
-                                                    transitionDuration:
-                                                        Duration.zero,
-                                                    reverseTransitionDuration:
-                                                        Duration.zero,
-                                                  ),
-                                                );
-                                              });
-                                            },
-                                            child: const Text('Delete',
-                                                style: TextStyle(
-                                                  color: Color(0xFF133266),
-                                                  fontWeight: FontWeight.bold,
-                                                )),
-                                          ),
-                                        ],
                                       );
                                     },
-                                  );
-                                },
-                                child: const PhosphorIcon(
-                                  PhosphorIconsBold.trash,
-                                  size: 32.0,
-                                  color: Color(0xFF133266),
-                                ),
+                                    child: const Text(
+                                      'Scan a document (beta)',
+                                      style: TextStyle(
+                                        color: Color(0xFF133266),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: Color(0xFF133266),
+                                        decorationThickness: 2,
+                                      ),
+                                    ),
+                                  ),
+                                  // const SizedBox(width: 20),
+                                  // TextButton(
+                                  //   style: TextButton.styleFrom(
+                                  //     padding: EdgeInsets.zero,
+                                  //     tapTargetSize:
+                                  //         MaterialTapTargetSize.shrinkWrap,
+                                  //     alignment: Alignment.centerLeft,
+                                  //   ),
+                                  //   onPressed: null,
+                                  //   child: const Text(
+                                  //     'Import cards',
+                                  //     style: TextStyle(
+                                  //       color: Color(0xFF133266),
+                                  //       fontSize: 16,
+                                  //       fontWeight: FontWeight.bold,
+                                  //       decoration: TextDecoration.underline,
+                                  //       decorationColor: Color(0xFF133266),
+                                  //       decorationThickness: 2,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
+                              )
+                            : const SizedBox(
+                                height: 0,
                               ),
-                          ],
-                        ),
                       ),
                       for (final card in _cards) ...[
                         AddCard(
