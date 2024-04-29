@@ -1,14 +1,11 @@
 # Flashcards App
 
 ## Overview
-Deze repository zal binnenkort de code bevatten van een flashcards app gemaakt door Juul Van de Velde.
+This repository contains the code for a flashcards app developed by Juul Van de Velde.
 
-## Mogelijke Functionaliteiten
-- flashcards toevoegen/verwijderen/bewerken/groeperen
-- studeersessies om de kaartjes uit je hoofd te leren (adhv van spaced repetition)
-- verschillende soorten flashcards (tekst, foto, ...)
-- herinneringen om je flashcards te leren
-- verschillende kleurenthema's
-- export/import van sets
-- opslaan in 'de cloud', maar ook offline toegankelijk
-- feedback op resultaten, grafieken ?
+## Features
+- Add, remove and edit flashcards
+- Import flashcard decks by taking pictures of your vocabulary lists
+- Study sessions to memorize flashcards
+- Data stored online in MongoDB
+- Authentication with Firebase
