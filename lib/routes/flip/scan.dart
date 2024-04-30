@@ -282,19 +282,21 @@ class _ScanState extends State<Scan> {
           bodyMap['cards'].map((item) => Map<String, String>.from(
               item.map((key, value) => MapEntry(key, value ?? '')))));
 
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation1,
-              Animation<double> animation2) {
-            return Add(
-              editCards: cards,
-            );
-          },
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation<double> animation1,
+                Animation<double> animation2) {
+              return Add(
+                editCards: cards,
+              );
+            },
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         selectedMedia = null;
